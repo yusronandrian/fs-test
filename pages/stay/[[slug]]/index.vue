@@ -259,6 +259,16 @@ const handleButtonClickSearch = () => {
                     <template v-slot:title>
                       <div class="d-flex justify-space-between align-center">
                         <v-sheet class="ma-2 pa-2">
+                          <span  v-for="(dImages, dIdx) in data[id].room[groupKey.split('-').pop().trim()].images">
+                            <div v-if="dIdx==0">
+                              <img :src="dImages.links['200px'].href" class="ma-2"/>
+                            </div>
+                            <img v-else :src="dImages.links['70px'].href" class="ma-2"/>
+                          </span>
+                        </v-sheet>
+                      </div>
+                      <div class="d-flex justify-space-between align-center">
+                        <v-sheet class="ma-2 pa-2">
                           <h5>{{ groupKey.split('-')[0] }}</h5>
                           <div class="d-flex justify-between align-left" style="font-size: small;">
                             <v-sheet class="ma-1 pa-1">
@@ -275,49 +285,47 @@ const handleButtonClickSearch = () => {
                           <v-btn class="text-capitalize" variant="flat"><span style="color:blue;">See Details</span></v-btn>
                         </v-sheet>
                       </div>
+                      <div v-for="offer in offers" :key="offer.offer_id">
+                        <v-divider></v-divider>
+                        <div class="d-flex justify-space-between align-center">
+                          <v-sheet class="ma-2 pa-2">
+                              <span :style="{ color: offer.xcode_log.amenities['1073742786'] ? 'green' : 'grey' }">
+                                <span class="mdi mdi-silverware-fork-knife"></span>
+                                {{ offer.xcode_log.amenities['1073742786'] ? 'Free Breakfast' : 'Without Breakfast' }}
+                              </span>
+                              <br>
+                              <!-- <h3>{{ offer.room_data.id }}</h3> -->
+                              <span :style="{ color: offer.xcode_log.refundable ? 'green' : 'red' }">
+                                <span :class="['mdi', offer.xcode_log.refundable ? 'mdi-credit-card-outline' : 'mdi-credit-card-off-outline']"></span>
+                                {{ offer.xcode_log.refundable ? offer.cancel_policy_description : 'Non-refundable' }}
+                              </span>
+                              <!-- <p>Cancel Policy: {{ offer.cancel_policy_code }} - {{ offer.cancel_policy_deadline }} - {{ offer.cancel_policy_description }}</p> -->
+                              <!-- <p>Amenities: {{ offer.xcode_log.amenities }}</p> -->
+                              <p>Rp: <strong style="font-size: medium;">{{ offer.rate_nightly.toLocaleString() }}</strong> /night *</p>
+                              <span class="text-grey" v-if="offer.rate_nightly != offer.price_total">Total - Rp: {{ offer.price_total.toLocaleString() }}</span>
+                              <br>
+                              <span class="text-grey">after tax & fees</span>
+                          </v-sheet>
+                          <v-sheet class="ma-2 pa-2"> 
+                            <v-btn color="primary" class="text-capitalize">Book Now</v-btn>
+                          </v-sheet>
+                        </div>
+                        <div class="d-flex justify-space-between align-center">
+                          <v-sheet class="ma-2 pa-2 text-grey">
+                            <span>Member-only price, valid in app only</span>
+                          </v-sheet>
+                          <v-sheet class="ma-2 pa-2 text-blue"> 
+                            <span class="mdi mdi-star"></span>
+                            <span>Collect {{ offer.pricing_data.wisata_point }} points</span>
+                          </v-sheet>
+                        </div>
+                      </div>
                     </template>
-                    <div v-for="offer in offers" :key="offer.offer_id">
-                      <v-divider></v-divider>
-                      <div class="d-flex justify-space-between align-center">
-                        <v-sheet class="ma-2 pa-2">
-                            <span :style="{ color: offer.xcode_log.amenities['1073742786'] ? 'green' : 'grey' }">
-                              <span class="mdi mdi-silverware-fork-knife"></span>
-                              {{ offer.xcode_log.amenities['1073742786'] ? 'Free Breakfast' : 'Without Breakfast' }}
-                            </span>
-                            <br>
-                            <!-- <h3>{{ offer.room_data.id }}</h3> -->
-                            <span :style="{ color: offer.xcode_log.refundable ? 'green' : 'red' }">
-                              <span :class="['mdi', offer.xcode_log.refundable ? 'mdi-credit-card-outline' : 'mdi-credit-card-off-outline']"></span>
-                              {{ offer.xcode_log.refundable ? offer.cancel_policy_description : 'Non-refundable' }}
-                            </span>
-                            <!-- <p>Cancel Policy: {{ offer.cancel_policy_code }} - {{ offer.cancel_policy_deadline }} - {{ offer.cancel_policy_description }}</p> -->
-                            <!-- <p>Amenities: {{ offer.xcode_log.amenities }}</p> -->
-                            <p>Rp: <strong style="font-size: medium;">{{ offer.rate_nightly.toLocaleString() }}</strong> /night *</p>
-                            <span class="text-grey" v-if="offer.rate_nightly != offer.price_total">Total - Rp: {{ offer.price_total.toLocaleString() }}</span>
-                            <br>
-                            <span class="text-grey">after tax & fees</span>
-                        </v-sheet>
-                        <v-sheet class="ma-2 pa-2"> 
-                          <v-btn color="primary" class="text-capitalize">Book Now</v-btn>
-                        </v-sheet>
-                      </div>
-                      <div class="d-flex justify-space-between align-center">
-                        <v-sheet class="ma-2 pa-2 text-grey">
-                          <span>Member-only price, valid in app only</span>
-                        </v-sheet>
-                        <v-sheet class="ma-2 pa-2 text-blue"> 
-                          <span class="mdi mdi-star"></span>
-                          <span>Collect {{ offer.pricing_data.wisata_point }} points</span>
-                        </v-sheet>
-                      </div>
-                    </div>
-                    
                   </v-card>
                   <br>
                 </div>
               </div>
             </div>
-            
           </v-tabs-window-item>
 
           <v-tabs-window-item value="two">
@@ -329,7 +337,7 @@ const handleButtonClickSearch = () => {
                   sm="4"
                 >
                   <v-sheet class="ma-2 pa-2">
-                    <NuxtImg :src="item.src"/>
+                    <img :src="item.src"/>
                   </v-sheet>
                 </v-col>
               </v-row>
