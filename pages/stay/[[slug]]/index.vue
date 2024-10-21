@@ -185,7 +185,7 @@ const handleButtonClickSearch = () => {
     <div v-if="data" class="profile">
       <div class="d-flex justify-between">
         <v-sheet class="ma-2 pa-2">
-          <NuxtImg :src="data[id].catalog.hero_image_url.sm" class="circle-image" />
+          <img :src="data[id].catalog.hero_image_url.sm" class="circle-image" />
         </v-sheet>
         <v-sheet class="ma-2 pa-2"> 
           <div class="name-rating">
